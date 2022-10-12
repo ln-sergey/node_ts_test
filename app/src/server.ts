@@ -9,13 +9,6 @@ const PORT: number = +(process.env.NODE_DOCKER_PORT ?? 8080);
 
 const server: http.Server = new http.Server();
 
-server.emit = Proxy.revocable(server.emit, {
-  apply: (target, thisArg, args) => {
-    console.log('emit', ` name: ${args[0]}`);
-    return Reflect.apply(target, thisArg, args);
-  }
-}).proxy;
-
 dataBase.mongoose
   .connect(dataBase.url)
   .then(() => {

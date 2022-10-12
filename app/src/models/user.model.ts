@@ -1,12 +1,12 @@
 import { Schema, model, connect } from 'mongoose';
 
 interface IUser {
-  id: string;
+  _id: string;
   name: string;
 }
 
 const userSchema = new Schema<IUser>({
-  id: { type: String, required: true },
+  _id: { type: String, required: true },
   name: { type: String, required: true },
 });
 
