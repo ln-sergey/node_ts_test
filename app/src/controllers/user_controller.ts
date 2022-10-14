@@ -42,12 +42,10 @@ class UserController {
         }
     }
     async delete(ctx: Context) {
-        console.log('delete----');
         const id = ctx.req.url?.split('/')[1];
         const result = await (ctx.db as Db)
             .collection(this.COLLECTION_NAME)
             .deleteOne({ _id: id });
-        console.log(result);
         if (!result.deletedCount) {
             throw new NotFoundError('account_not_found');
         } else {
