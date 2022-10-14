@@ -20,9 +20,12 @@ DataBase.connect()
     .then((mongoClient: MongoClient) => {
         mongoClient.db
         app.context.db = mongoClient.db(process.env.DB_NAME);
-        app.listen(PORT)
+        app.listen(PORT, () => {
+            console.log(`Server is listening on port ${PORT}`);
+        });
     })
     .catch((err: Error) => {
+        console.error(err);
         app.context.db.close();
         process.exit(1);
     });
