@@ -13,7 +13,6 @@ services:
   app:
     build: $APP_LOCAL_PATH
     restart: unless-stopped
-    working_dir: $APP_DOCKER_PATH
     environment:
       - PORT=$NODE_DOCKER_PORT
       - DB_HOST=mongodb
@@ -21,8 +20,6 @@ services:
       - DB_PASSWORD=$MONGODB_PASSWORD
       - DB_NAME=$MONGODB_DATABASE
       - DB_PORT=$MONGODB_DOCKER_PORT
-    volumes:
-      - $APP_LOCAL_PATH:$APP_DOCKER_PATH
     ports:
       - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
     depends_on:
@@ -42,3 +39,4 @@ services:
       - ME_CONFIG_BASICAUTH_PASSWORD=$ADMIN_CONFIG_BASICAUTH_PASSWORD
     depends_on:
       - mongodb
+      
