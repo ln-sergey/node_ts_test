@@ -1,9 +1,6 @@
-import mongoose from 'mongoose';
+import { MongoClient } from 'mongodb';
 import { url } from '../config/db.config';
 
-mongoose.Promise = global.Promise;
+export { IUser } from './user.model';
 
-export const dataBase = {
-    mongoose: mongoose,
-    url: url,
-};
+export const DataBase = new MongoClient(url);
