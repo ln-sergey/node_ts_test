@@ -20,8 +20,11 @@ services:
       - DB_PASSWORD=$MONGODB_PASSWORD
       - DB_NAME=$MONGODB_DATABASE
       - DB_PORT=$MONGODB_DOCKER_PORT
+    volumes:
+      - $APP_LOCAL_PATH:$APP_DOCKER_PATH
     ports:
       - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+      - 9229:9229
     depends_on:
       - mongodb
 

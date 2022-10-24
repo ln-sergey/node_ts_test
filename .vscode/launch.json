@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach",
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "restart": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "localRoot": "${workspaceFolder}/app/src",
+            "remoteRoot": "home/node/app/src"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "localRoot": "${workspaceFolder}/app/src",
+            "remoteRoot": "/app/src",
+        }
+    ]
+}
