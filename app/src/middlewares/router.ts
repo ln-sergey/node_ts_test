@@ -1,8 +1,7 @@
 import { Context } from "koa";
-import path from "path";
 import UserController from "../controllers/user_controller";
 
-export async function onRequestListener(ctx: Context, next: () => Promise<any>) {
+export async function router(ctx: Context, next: () => Promise<any>) {
     const path = ctx.url.split('/');
     if (path.length < 3) {
         if (ctx.request.method === 'POST') {
