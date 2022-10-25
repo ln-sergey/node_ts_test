@@ -1,6 +1,6 @@
 import { Context } from "koa";
-import { Db, MongoClient } from "mongodb";
-import { ClientError, NotFoundError } from "../errors";
+import { Db } from "mongodb";
+import { NotFoundError } from "../errors";
 import { IUser, User } from "../models/user.model";
 
 class UserController {
@@ -15,10 +15,9 @@ class UserController {
         ctx.status = 200;
     }
     async getOne(ctx: Context) {
-        const id = ctx.req.url?.split('/')[1];
         const user = await (ctx.db as Db)
             .collection(this.COLLECTION_NAME)
-            .findOne({ _id: id });
+            .findOne({ _id: ctx.params.id });
         if (!user) {
             throw new NotFoundError('account_not_found');
         } else {
@@ -27,30 +26,28 @@ class UserController {
         }
     }
     async update(ctx: Context) {
-        const id = ctx.req.url?.split('/')[1];
         const result = await (ctx.db as Db)
             .collection(this.COLLECTION_NAME)
-            .updateOne({ _id: id }, { $set: ctx.body });
+            .updateOne({ _id: ctx.params.id }, { $set: ctx.body });
         if (!result.matchedCount) {
             throw new NotFoundError('account_not_found');
         } else {
             const user = await (ctx.db as Db)
                 .collection(this.COLLECTION_NAME)
-                .findOne({ _id: id });
+                .findOne({ _id: ctx.params.id });
             ctx.status = 200;
             ctx.body = JSON.stringify(user);
         }
     }
     async delete(ctx: Context) {
-        const id = ctx.req.url?.split('/')[1];
         const result = await (ctx.db as Db)
             .collection(this.COLLECTION_NAME)
-            .deleteOne({ _id: id });
+            .deleteOne({ _id: ctx.params.id });
         if (!result.deletedCount) {
             throw new NotFoundError('account_not_found');
         } else {
             ctx.status = 200;
-            ctx.body = JSON.stringify({ _id: id });
+            ctx.body = JSON.stringify({ _id: ctx.params.id });
         }
     }
 }
