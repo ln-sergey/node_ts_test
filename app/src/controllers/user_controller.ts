@@ -7,7 +7,7 @@ import { IUser } from "../schemas/user.schema";
 class UserController {
   private COLLECTION_NAME = "users";
 
-  async create(ctx: Context, next: () => Promise<void>) {
+  async create(ctx: Context) {
     const id = objectHash(ctx.body as IUser);
     const model = {
       _id: id,
@@ -18,10 +18,9 @@ class UserController {
       .insertOne(model as object);
     ctx.body = JSON.stringify(model);
     ctx.status = 200;
-    await next();
   }
 
-  async getOne(ctx: Context, next: () => Promise<void>) {
+  async getOne(ctx: Context) {
     const user = await (ctx.db as Db)
       .collection(this.COLLECTION_NAME)
       .findOne({ _id: ctx.params.id });
@@ -30,11 +29,10 @@ class UserController {
     } else {
       ctx.status = 200;
       ctx.body = JSON.stringify(user);
-      await next();
     }
   }
 
-  async paginate(ctx: Context, next: () => Promise<void>) {
+  async paginate(ctx: Context) {
     const { limit, offset, status } = ctx.query;
     const users = await (ctx.db as Db)
       .collection(this.COLLECTION_NAME)
@@ -44,27 +42,25 @@ class UserController {
       .toArray();
     ctx.status = 200;
     ctx.body = JSON.stringify(users);
-    await next();
   }
 
-  async update(ctx: Context, next: () => Promise<void>) {
+  async update(ctx: Context) {
     const result = await (ctx.db as Db)
       .collection(this.COLLECTION_NAME)
       .findOneAndUpdate(
         { _id: ctx.params.id },
         { $set: ctx.body as UpdateFilter<Document> },
-        { returnNewDocument: true } as FindOneAndUpdateOptions
+        { returnNewDocument: "after" } as FindOneAndUpdateOptions
       );
     if (!result) {
       throw new NotFoundError("account_not_found");
     } else {
       ctx.status = 200;
       ctx.body = JSON.stringify(result);
-      await next();
     }
   }
 
-  async delete(ctx: Context, next: () => Promise<void>) {
+  async delete(ctx: Context) {
     const result = await (ctx.db as Db)
       .collection(this.COLLECTION_NAME)
       .deleteOne({ _id: ctx.params.id });
@@ -73,7 +69,6 @@ class UserController {
     } else {
       ctx.status = 200;
       ctx.body = JSON.stringify({ _id: ctx.params.id });
-      await next();
     }
   }
 }
