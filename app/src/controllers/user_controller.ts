@@ -8,10 +8,10 @@ class UserController {
   private COLLECTION_NAME = "users";
 
   async create(ctx: Context) {
-    const id = objectHash(ctx.body as IUser);
+    const id = objectHash(ctx.request.body as IUser);
     const model = {
       _id: id,
-      ...(ctx.body as IUser),
+      ...(ctx.request.body as IUser),
     };
     await (ctx.db as Db)
       .collection(this.COLLECTION_NAME)
@@ -49,7 +49,7 @@ class UserController {
       .collection(this.COLLECTION_NAME) as Collection<WithId<IUser>>)
       .findOneAndUpdate(
         { _id: ctx.params.id },
-        { $set: ctx.body as IUser },
+        { $set: ctx.request.body as IUser },
         { returnNewDocument: "after" } as FindOneAndUpdateOptions
       );
     if (!result) {
