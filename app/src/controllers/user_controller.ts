@@ -1,6 +1,6 @@
 import objectHash from "object-hash";
 import { Context } from "koa";
-import { Db, FindOneAndUpdateOptions, UpdateFilter } from "mongodb";
+import { Collection, Db, FindOneAndUpdateOptions, UpdateFilter, WithId } from "mongodb";
 import { NotFoundError } from "../errors";
 import { IUser } from "../schemas/user.schema";
 
@@ -45,11 +45,11 @@ class UserController {
   }
 
   async update(ctx: Context) {
-    const result = await (ctx.db as Db)
-      .collection(this.COLLECTION_NAME)
+    const result = await ((ctx.db as Db)
+      .collection(this.COLLECTION_NAME) as Collection<WithId<IUser>>)
       .findOneAndUpdate(
         { _id: ctx.params.id },
-        { $set: ctx.body as UpdateFilter<Document> },
+        { $set: ctx.body as IUser },
         { returnNewDocument: "after" } as FindOneAndUpdateOptions
       );
     if (!result) {
