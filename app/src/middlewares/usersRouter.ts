@@ -16,29 +16,30 @@ export const usersRouter = new Router()
     koaBody,
     validateRequestBody(userValidate),
     addContentType("application/json"),
-    UserController.create
+    UserController.create.bind(UserController)
   )
   .get(
     "/paginate",
     validateQuery(paginateValidate),
     addContentType("application/json"),
-    UserController.paginate
+    UserController.paginate.bind(UserController)
   )
   .get(
     "/:id",
     addContentType("application/json"),
-    UserController.getOne
+    UserController.getOne.bind(UserController)
   )
   .put(
     "/:id",
     koaBody,
+    validateRequestBody(userValidate),
     addContentType("application/json"),
-    UserController.update
+    UserController.update.bind(UserController)
   )
   .delete(
     "/:id",
     addContentType("application/json"),
-    UserController.delete
+    UserController.delete.bind(UserController)
   )
   .get("/addmock/users", addMockUsers);
 
