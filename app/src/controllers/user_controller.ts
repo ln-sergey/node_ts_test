@@ -1,13 +1,13 @@
 import objectHash from "object-hash";
 import { Context } from "koa";
-import { Collection, Db, FindOneAndUpdateOptions, UpdateFilter, WithId } from "mongodb";
+import { Collection, Db, FindOneAndUpdateOptions, WithId } from "mongodb";
 import { NotFoundError } from "../errors";
 import { IUser } from "../schemas/user.schema";
 
 class UserController {
-  private COLLECTION_NAME = "users";
+  private static COLLECTION_NAME = "users";
 
-  async create(ctx: Context) {
+  static async create(ctx: Context) {
     const id = objectHash(ctx.request.body as IUser);
     const model = {
       _id: id,
@@ -20,7 +20,7 @@ class UserController {
     ctx.status = 200;
   }
 
-  async getOne(ctx: Context) {
+  static async getOne(ctx: Context) {
     const user = await (ctx.db as Db)
       .collection(this.COLLECTION_NAME)
       .findOne({ _id: ctx.params.id });
@@ -32,8 +32,11 @@ class UserController {
     }
   }
 
-  async paginate(ctx: Context) {
+  static async paginate(ctx: Context) {
     const { limit, offset, status } = ctx.query;
+    const usersCount = await (ctx.db as Db)
+      .collection(this.COLLECTION_NAME)
+      .count(status ? { status } : {});
     const users = await (ctx.db as Db)
       .collection(this.COLLECTION_NAME)
       .find(status ? { status } : {})
@@ -41,26 +44,28 @@ class UserController {
       .limit(Number(limit))
       .toArray();
     ctx.status = 200;
-    ctx.body = JSON.stringify(users);
+    ctx.body = JSON.stringify({ total: usersCount, items: users });
   }
 
-  async update(ctx: Context) {
-    const result = await ((ctx.db as Db)
-      .collection(this.COLLECTION_NAME) as Collection<WithId<IUser>>)
-      .findOneAndUpdate(
-        { _id: ctx.params.id },
-        { $set: ctx.request.body as IUser },
-        { returnNewDocument: "after" } as FindOneAndUpdateOptions
-      );
+  static async update(ctx: Context) {
+    const result = await (
+      (ctx.db as Db).collection(this.COLLECTION_NAME) as Collection<
+        WithId<IUser>
+      >
+    ).findOneAndUpdate(
+      { _id: ctx.params.id },
+      { $set: ctx.request.body as IUser },
+      { returnDocument: "after" } as FindOneAndUpdateOptions
+    );
     if (!result) {
       throw new NotFoundError("account_not_found");
     } else {
       ctx.status = 200;
-      ctx.body = JSON.stringify(result);
+      ctx.body = JSON.stringify(result.value);
     }
   }
 
-  async delete(ctx: Context) {
+  static async delete(ctx: Context) {
     const result = await (ctx.db as Db)
       .collection(this.COLLECTION_NAME)
       .deleteOne({ _id: ctx.params.id });
@@ -73,4 +78,4 @@ class UserController {
   }
 }
 
-export default new UserController();
+export default UserController;

@@ -1,13 +1,13 @@
 import { JSONSchemaType } from "ajv/dist/core";
 import ajv from ".";
 
-export interface IPaginage {
+export interface IPaginate {
   limit: number;
   offset: number;
   status: string;
 }
 
-const paginageSchema: JSONSchemaType<IPaginage> = {
+const paginateSchema: JSONSchemaType<IPaginate> = {
   type: "object",
   properties: {
     limit: {
@@ -26,5 +26,5 @@ const paginageSchema: JSONSchemaType<IPaginage> = {
   required: ["offset", "limit"],
 }
 
-export const paginageValidate = ajv.compile<IPaginage>(paginageSchema);
+export const paginateValidate = ajv.compile<IPaginate>(paginateSchema);
 
