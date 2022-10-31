@@ -16,7 +16,7 @@ class UserController {
     await (ctx.db as Db)
       .collection(this.COLLECTION_NAME)
       .insertOne(model as object);
-    ctx.body = JSON.stringify(model);
+    ctx.body = JSON.stringify(model, null, 2);
     ctx.status = 200;
   }
 
@@ -28,7 +28,7 @@ class UserController {
       throw new NotFoundError("account_not_found");
     } else {
       ctx.status = 200;
-      ctx.body = JSON.stringify(user);
+      ctx.body = JSON.stringify(user, null, 2);
     }
   }
 
@@ -44,7 +44,43 @@ class UserController {
       .limit(Number(limit))
       .toArray();
     ctx.status = 200;
-    ctx.body = JSON.stringify({ total: usersCount, items: users });
+    ctx.body = JSON.stringify({ total: usersCount, items: users }, null, 2);
+  }
+
+  static async stats(ctx: Context) {
+    const { city } = ctx.query;
+    const statsCursor = (ctx.db as Db)
+      .collection<WithId<IUser>>(this.COLLECTION_NAME)
+      .aggregate([
+        { $unset: ["name", "email"] },
+        { $match: !city ? {} : { city: { $in: (city as string).split(",") } } },
+        {
+          $group: {
+            _id: "$city",
+            premium: {
+              $sum: {
+                $cond: [ { $eq: ["$status", "premium"], }, 1, 0 ],
+              },
+            },
+            regular: {
+              $sum: {
+                $cond: [ { $eq: ["$status", "regular"], }, 1, 0 ],
+              },
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            city: "$_id",
+            premium: "$premium",
+            regular: "$regular",
+          },
+        },
+      ]);
+
+    ctx.body = JSON.stringify(await statsCursor.toArray(), null, 2);
+    ctx.status = 200;
   }
 
   static async update(ctx: Context) {
@@ -73,7 +109,7 @@ class UserController {
       throw new NotFoundError("account_not_found");
     } else {
       ctx.status = 200;
-      ctx.body = JSON.stringify({ _id: ctx.params.id });
+      ctx.body = JSON.stringify({ _id: ctx.params.id }, null, 2);
     }
   }
 }

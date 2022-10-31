@@ -25,6 +25,11 @@ export const usersRouter = new Router()
     UserController.paginate.bind(UserController)
   )
   .get(
+    "/stats",
+    addContentType("application/json"),
+    UserController.stats.bind(UserController)
+  )
+  .get(
     "/:id",
     addContentType("application/json"),
     UserController.getOne.bind(UserController)
