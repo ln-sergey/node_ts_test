@@ -1,5 +1,5 @@
 {
-  "name": "node_app",
+  "name": "authorization_service",
   "version": "1.0.0",
   "description": "",
   "author": "lnsergey",
@@ -7,15 +7,21 @@
   "main": "src/app.ts",
   "scripts": {
     "start": "npx tsc && node ./.build/app.js",
-    "start.dev": "./node_modules/.bin/nodemon --inspect=0.0.0.0:9229 --signal SIGINT --nolazy ./src/app.ts",
+    "start.dev": "./node_modules/.bin/nodemon --signal SIGINT --nolazy ./src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@types/es6-promisify": "^6.0.1",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/koa": "^2.13.5",
     "@types/koa-convert": "^1.2.4",
+    "@types/koa-passport": "^4.0.3",
     "@types/koa-router": "^7.4.4",
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^18.8.3",
     "@types/object-hash": "^2.2.1",
+    "@types/passport": "^1.0.11",
+    "@types/passport-local": "^1.0.34",
     "ajv": "^8.11.0",
     "koa-convert": "^2.0.0",
     "nodemon": "^2.0.20",
@@ -24,11 +30,17 @@
   },
   "dependencies": {
     "ajv-formats": "^2.1.1",
+    "es6-promisify": "^7.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "kafkajs": "^2.2.2",
     "koa": "^2.13.4",
     "koa-body": "^5.0.0",
+    "koa-passport": "^5.0.0",
     "koa-router": "^12.0.0",
-    "mongodb": "^4.10.0",
-    "object-hash": "^3.0.0"
+    "mongoose": "^6.7.2",
+    "object-hash": "^3.0.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
   },
   "nodemonConfig": {
     "watch": [
