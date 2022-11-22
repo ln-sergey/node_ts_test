@@ -29,7 +29,6 @@ services:
       - $USERS_SERVICE_LOCAL_PATH:$USERS_SERVICE_DOCKER_PATH
     ports:
       - $USERS_SERVICE_LOCAL_PORT:$USERS_SERVICE_DOCKER_PORT
-      - 9229:9229
     depends_on:
       - mongodb
 
@@ -48,6 +47,7 @@ services:
       - $AUTHORIZATION_SERVICE_LOCAL_PATH:$AUTHORIZATION_SERVICE_DOCKER_PATH
     ports:
       - $AUTHORIZATION_SERVICE_LOCAL_PORT:$AUTHORIZATION_SERVICE_DOCKER_PORT
+      - 9229:9229
     depends_on:
       - mongodb
 
@@ -71,18 +71,18 @@ services:
     depends_on:
       - zookeeper
 
-  # mongo-express:
-  #   image: mongo-express
-  #   restart: unless-stopped
-  #   ports:
-  #     - $MONGOEXPRESS_LOCAL_PORT:$MONGOEXPRESS_DOCKER_PORT
-  #   environment:
-  #     - ME_CONFIG_MONGODB_SERVER=mongodb
-  #     - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
-  #     - ME_CONFIG_MONGODB_ADMINUSERNAME=$MONGODB_USER
-  #     - ME_CONFIG_MONGODB_ADMINPASSWORD=$MONGODB_PASSWORD
-  #     - ME_CONFIG_BASICAUTH_USERNAME=$ADMIN_CONFIG_BASICAUTH_USERNAME
-  #     - ME_CONFIG_BASICAUTH_PASSWORD=$ADMIN_CONFIG_BASICAUTH_PASSWORD
-  #   depends_on:
-  #     - mongodb
+  mongo-express:
+    image: mongo-express
+    restart: unless-stopped
+    ports:
+      - $MONGOEXPRESS_LOCAL_PORT:$MONGOEXPRESS_DOCKER_PORT
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=$MONGODB_USER
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=$MONGODB_PASSWORD
+      - ME_CONFIG_BASICAUTH_USERNAME=$ADMIN_CONFIG_BASICAUTH_USERNAME
+      - ME_CONFIG_BASICAUTH_PASSWORD=$ADMIN_CONFIG_BASICAUTH_PASSWORD
+    depends_on:
+      - mongodb
       

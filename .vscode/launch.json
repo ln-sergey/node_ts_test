@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Attach",
+            "name": "Attach (users_service)",
             "type": "node",
             "request": "attach",
             "port": 9229,
@@ -10,7 +10,19 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "localRoot": "${workspaceFolder}/app/src",
+            "localRoot": "${workspaceFolder}/users_service/src",
+            "remoteRoot": "home/node/app/src"
+        },
+        {
+            "name": "Attach (authorization_service)",
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "restart": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "localRoot": "${workspaceFolder}/authorization_service/src",
             "remoteRoot": "home/node/app/src"
         },
         {

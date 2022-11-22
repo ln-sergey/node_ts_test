@@ -1,4 +1,4 @@
-import { Collection, Db } from "mongodb";
+import { Collection, Db, WithId } from "mongodb";
 import { NotFoundError } from "../errors";
 import { IIdentity, IIdentityMessage } from "../schemas/identity.schema";
 
@@ -21,6 +21,15 @@ export class AuthenticationController {
     });
   }
 
+  async getOne(email: string, code: string): Promise<WithId<IIdentity>> {
+    const user = await this.collection
+      .findOne({ email, code });
+    if (!user) {
+      throw new NotFoundError("unauthorized");
+    }
+    return user;
+  }
+
   async update(message: IIdentityMessage) {
     const result = await this.collection.findOneAndUpdate(
       { _id: message._id },
@@ -28,14 +37,14 @@ export class AuthenticationController {
       { returnDocument: "after" }
     );
     if (!result) {
-      throw new NotFoundError("account_not_found");
+      throw new NotFoundError("identity_not_found");
     }
   }
 
   async delete(id: string) {
     const result = await this.collection.deleteOne({ _id: id });
     if (!result.deletedCount) {
-      throw new NotFoundError("account_not_found");
+      throw new NotFoundError("identity_not_found");
     }
   }
 

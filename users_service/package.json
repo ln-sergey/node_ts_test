@@ -7,7 +7,7 @@
   "main": "src/app.ts",
   "scripts": {
     "start": "npx tsc && node ./.build/app.js",
-    "start.dev": "./node_modules/.bin/nodemon --inspect=0.0.0.0:9229 --signal SIGINT --nolazy ./src/app.ts",
+    "start.dev": "./node_modules/.bin/nodemon --signal SIGINT --nolazy ./src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
