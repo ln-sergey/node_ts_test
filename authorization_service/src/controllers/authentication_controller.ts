@@ -41,8 +41,8 @@ export class AuthenticationController {
     }
   }
 
-  async delete(id: string) {
-    const result = await this.collection.deleteOne({ _id: id });
+  async delete(message: { _id: string }) {
+    const result = await this.collection.deleteOne(message);
     if (!result.deletedCount) {
       throw new NotFoundError("identity_not_found");
     }

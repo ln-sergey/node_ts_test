@@ -8,6 +8,7 @@ import { paginateValidate } from "../schemas/paginage.schema";
 import { addMockUsers } from "../add_mock_data";
 import { Context } from "koa";
 import { authorizationController } from "../controllers/authorization_controller";
+import { userUpdateValidate } from "../schemas/user.update.schema";
 
 const koaBody = convert(KoaBody());
 
@@ -39,7 +40,7 @@ export const usersRouter = new Router()
   .put(
     "/:id",
     koaBody,
-    validateRequestBody(userValidate),
+    validateRequestBody(userUpdateValidate),
     addContentType("application/json"),
     UserController.update.bind(UserController),
     authorizationController.sendUpdate.bind(authorizationController),

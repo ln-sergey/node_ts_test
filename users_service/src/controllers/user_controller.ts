@@ -3,6 +3,7 @@ import { Context } from "koa";
 import { Db, WithId } from "mongodb";
 import { NotFoundError } from "../errors";
 import { IUser } from "../schemas/user.schema";
+import { IUserUpdate } from "../schemas/user.update.schema";
 
 class UserController {
   private static COLLECTION_NAME = process.env.COLLECTION_NAME as string;
@@ -89,7 +90,7 @@ class UserController {
       .collection<IUser>(this.COLLECTION_NAME)
       .findOneAndUpdate(
         { _id: ctx.params.id },
-        { $set: ctx.request.body },
+        { $set: ctx.request.body as IUserUpdate },
         { returnDocument: "after" }
       );
     if (!result) {
