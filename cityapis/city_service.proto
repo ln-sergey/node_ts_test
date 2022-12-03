@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package cityapis;
+
+message VerifyCityRequest {
+  string city = 1;
+}
+
+message VerifyCityResponse {
+  string error = 1;
+}
+
+service City {
+  rpc verifyCityCall(VerifyCityRequest) returns (VerifyCityResponse) {}
+}

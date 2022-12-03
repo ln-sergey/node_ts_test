@@ -9,6 +9,7 @@ import { addMockUsers } from "../add_mock_data";
 import { Context } from "koa";
 import { authorizationController } from "../controllers/authorization_controller";
 import { userUpdateValidate } from "../schemas/user.update.schema";
+import { validateCity } from "./city_validator";
 
 const koaBody = convert(KoaBody());
 
@@ -17,6 +18,7 @@ export const usersRouter = new Router()
     "/",
     koaBody,
     validateRequestBody(userValidate),
+    validateCity,
     addContentType("application/json"),
     UserController.create.bind(UserController),
     authorizationController.sendCreate.bind(authorizationController),
@@ -41,6 +43,7 @@ export const usersRouter = new Router()
     "/:id",
     koaBody,
     validateRequestBody(userUpdateValidate),
+    validateCity,
     addContentType("application/json"),
     UserController.update.bind(UserController),
     authorizationController.sendUpdate.bind(authorizationController),

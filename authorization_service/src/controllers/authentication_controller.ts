@@ -16,7 +16,7 @@ export class AuthenticationController {
     return this.collection.insertOne({
       _id: message._id,
       email: message.email,
-      city: message.city,
+      status: message.status,
       code: AuthenticationController.generateCode(),
     });
   }
@@ -33,7 +33,7 @@ export class AuthenticationController {
   async update(message: IIdentityMessage) {
     const result = await this.collection.findOneAndUpdate(
       { _id: message._id },
-      { $set: { city: message.city } },
+      { $set: { status: message.status } },
       { returnDocument: "after" }
     );
     if (!result) {

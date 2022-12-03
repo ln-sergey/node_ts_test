@@ -10,7 +10,8 @@ export async function authenticate(ctx: Context, next: () => Promise<any>) {
     const identity = await (
       ctx.authenticationController as AuthenticationController
     ).getOne(authentication.email, authentication.code);
-    const token = await generateToken({ city: identity.city }, "secret");
+    const token = await generateToken({ status: identity.status }, "secret");
+    
     ctx.status = 200;
     ctx.body = token;
   } catch (error) {

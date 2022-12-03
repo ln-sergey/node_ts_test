@@ -6,8 +6,10 @@
   "license": "ISC",
   "main": "src/app.ts",
   "scripts": {
-    "start": "npx tsc && node ./.build/app.js",
-    "start.dev": "./node_modules/.bin/nodemon --signal SIGINT --nolazy ./src/app.ts",
+    "start:prod": "npx tsc && node ./.build/app.js",
+    "build:proto": "./compile-proto-cityapis.sh",
+    "build:typescript": "tsc -p .",
+    "start:dev": "./node_modules/.bin/nodemon --signal SIGINT --nolazy ./src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
@@ -16,6 +18,9 @@
     "@types/koa-router": "^7.4.4",
     "@types/node": "^18.8.3",
     "@types/object-hash": "^2.2.1",
+    "@types/google-protobuf": "3.15.6",
+    "grpc_tools_node_protoc_ts": "5.3.2",
+    "grpc-tools": "1.11.2",
     "ajv": "^8.11.0",
     "koa-convert": "^2.0.0",
     "nodemon": "^2.0.20",
@@ -29,7 +34,9 @@
     "koa-body": "^5.0.0",
     "koa-router": "^12.0.0",
     "mongodb": "^4.10.0",
-    "object-hash": "^3.0.0"
+    "object-hash": "^3.0.0",
+    "@grpc/grpc-js": "1.6.8",
+    "google-protobuf": "3.21.0"
   },
   "nodemonConfig": {
     "watch": [

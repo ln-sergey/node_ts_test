@@ -8,4 +8,4 @@ WORKDIR /home/node/app
 
 # COPY . .
 
-CMD npm i && npm run start.dev
+CMD npm i && npm run start:dev
